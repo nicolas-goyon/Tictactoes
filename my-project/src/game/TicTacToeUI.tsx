@@ -14,7 +14,7 @@ const TicTacToeUI: React.FC = () => {
   const handleCellClick = (index: number) => {
     if (!game.isGameActive() || game.getBoardState()[index]) return;
 
-    const result = game.makeMove(index);
+    game.makeMove(index);
     updateStatus()
 
     if (game.checkWinner() === true) {
