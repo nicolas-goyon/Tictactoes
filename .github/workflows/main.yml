@@ -152,13 +152,3 @@ jobs:
           asset_path: ./my-app-latest.tar.gz
           asset_name: my-app-latest.tar.gz
           asset_content_type: application/gzip
-
-  notify:
-    runs-on: ubuntu-latest
-    needs: deploy
-    if: always()
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Notify
-        run: echo "Notify step"
