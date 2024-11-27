@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import TicTacToeGame from './TicTacToeGame';
+import {TicTacToeGame} from './TicTacToeGame';
 
 const TicTacToeUI: React.FC = () => {
   const [game, setGame] = useState(new TicTacToeGame());
@@ -15,11 +15,11 @@ const TicTacToeUI: React.FC = () => {
     if (!game.isGameActive() || game.getBoardState()[index]) return;
 
     const result = game.makeMove(index);
-    setGame(new TicTacToeGame());
+    updateStatus()
 
-    if (result === true) {
+    if (game.checkWinner() === true) {
       setStatus(`Player ${game.getCurrentPlayer()} wins!`);
-    } else if (result === false) {
+    } else if (game.isGameActive() === false) {
       setStatus("It's a draw!");
     }
   };
@@ -39,11 +39,12 @@ const TicTacToeUI: React.FC = () => {
 
   return (
     <div className="tic-tac-toe">
+      <h2 className="text-2xl font-semibold">Tic Tac Toe</h2>
       <div id="board" className="grid grid-cols-3 gap-2">
         {board.map((cell, index) => (
           <div
             key={index}
-            className={`cell flex items-center justify-center w-24 h-24 bg-gray-200 rounded shadow cursor-pointer text-2xl font-bold ${
+            className={`cell items-center justify-center w-24 h-24 bg-gray-200 rounded shadow cursor-pointer text-2xl font-bold ${
               cell ? 'pointer-events-none' : ''
             }`}
             onClick={() => handleCellClick(index)}
