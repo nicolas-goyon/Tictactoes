@@ -1,4 +1,3 @@
-// src/game/TicTacToeGame.ts
 export type Player = "X" | "O";
 
 export class TicTacToeGame {
