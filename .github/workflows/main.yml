@@ -52,29 +52,27 @@ jobs:
           name: eslint-report
           path: ./my-project/eslint-report.json
 
-      
-
   tests:
-    runs-on: ubuntu-latest
-    needs: lint
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Tests
-        run: echo "Tests step"
+  runs-on: ubuntu-latest
+  needs: lint
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.18.0'
+    - name: Install dependencies
+      run: npm install
+      working-directory: ./my-project
+    - name: Run tests
+      run: npm run test
+      working-directory: ./my-project
 
-  security-scan:
-    runs-on: ubuntu-latest
-    needs: tests
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Security Scan
-        run: echo "Security Scan step"
 
   build:
     runs-on: ubuntu-latest
-    needs: security-scan
+    needs: tests
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
