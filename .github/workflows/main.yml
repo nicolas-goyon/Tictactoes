@@ -6,15 +6,19 @@ on:
       - main
       - release
       - develop
-      - 'feature/*'
-      - 'bugfix/*'
-      - 'hotfix/*'
-      - 'fix/*'
+      - 'feature/**'
+      - 'bugfix/**'
+      - 'hotfix/**'
+      - 'fix/**'
   pull_request:
     branches:
       - main
       - release
       - develop
+permissions:
+  checks: write
+  contents: write
+
 
 jobs:
   prepare:
@@ -25,14 +29,30 @@ jobs:
       - name: Prepare
         run: echo "Prepare step"
 
+
   lint:
     runs-on: ubuntu-latest
     needs: prepare
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Lint
-        run: echo "Lint step"
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.18.0'
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./my-project
+      - name: Run ESLint
+        run: npx eslint . --format json --output-file eslint-report.json
+        working-directory: ./my-project
+      - name: Upload ESLint Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: eslint-report
+          path: ./my-project/eslint-report.json
+
+      
 
   tests:
     runs-on: ubuntu-latest
